@@ -59,6 +59,32 @@
 				</dependency>
 			</dependencies>
 		</profile>
+
+<!--		&lt;!&ndash; The configuration of the development profile &ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>dev</id>-->
+<!--			&lt;!&ndash; The development profile is active by default &ndash;&gt;-->
+<!--			<activation>-->
+<!--				<activeByDefault>true</activeByDefault>-->
+<!--			</activation>-->
+<!--			<properties>-->
+<!--				<build.profile.url>http://someaddress/example.wsdl</build.profile.url>-->
+<!--			</properties>-->
+<!--		</profile>-->
+<!--		&lt;!&ndash; The configuration of the production profile &ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>prod</id>-->
+<!--			<properties>-->
+<!--				<build.profile.url>http://someaddress/example2.wsdl</build.profile.url>-->
+<!--			</properties>-->
+<!--		</profile>-->
+<!--		&lt;!&ndash; The configuration of the testing profile &ndash;&gt;-->
+<!--		<profile>-->
+<!--			<id>test</id>-->
+<!--			<properties>-->
+<!--				<build.profile.url>http://someaddress/example3.wsdl</build.profile.url>-->
+<!--			</properties>-->
+<!--		</profile>-->
 	</profiles>
 	<!-- end::profile[] -->
 
@@ -83,11 +109,11 @@
 					<configuration>
 						<schemaLanguage>WSDL</schemaLanguage>
 						<generatePackage>com.example.consumingwebservice.wsdl</generatePackage>
-						<schemas>
-							<schema>
-								<url>resources/UbicaPlus.xml</url>
-							</schema>
-						</schemas>
+						<generateDirectory>${project.basedir}/src/main/java</generateDirectory>
+						<schemaIncludes>
+							<include>*.wsdl</include>
+						</schemaIncludes>
+						<catalog>${project.basedir}/src/main/resources/catalog.cat</catalog>
 					</configuration>
 			</plugin>
 			<!-- end::wsdl[] -->

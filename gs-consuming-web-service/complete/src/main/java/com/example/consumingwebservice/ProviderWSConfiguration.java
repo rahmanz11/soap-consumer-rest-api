@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 @Configuration
-public class CountryConfiguration {
+public class ProviderWSConfiguration {
 
 	@Bean
 	public Jaxb2Marshaller marshaller() {
@@ -18,9 +18,9 @@ public class CountryConfiguration {
 	}
 
 	@Bean
-	public CountryClient countryClient(Jaxb2Marshaller marshaller) {
-		CountryClient client = new CountryClient();
-		client.setDefaultUri("http://localhost:8080/ws");
+	public ProviderWSClient countryClient(Jaxb2Marshaller marshaller) {
+		ProviderWSClient client = new ProviderWSClient();
+		client.setDefaultUri("https://miportafoliouat.transunion.co/ws/UbicaPlusWebService/services/UbicaPlus?wsdl");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);
 		return client;
