@@ -1,0 +1,45 @@
+<wsdl:definitions targetNamespace="http://ubicaplus.webservice.com">
+<wsdl:types>
+<schema targetNamespace="http://dto.ubicaplus.webservice.com">
+<import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+<complexType name="ParametrosUbicaPlusDTO">
+<sequence>
+<element name="codigoInformacion" nillable="true" type="soapenc:string"/>
+<element name="motivoConsulta" nillable="true" type="soapenc:string"/>
+<element name="numeroIdentificacion" nillable="true" type="soapenc:string"/>
+<element name="primerApellido" nillable="true" type="soapenc:string"/>
+<element name="tipoIdentificacion" nillable="true" type="soapenc:string"/>
+</sequence>
+</complexType>
+</schema>
+</wsdl:types>
+<wsdl:message name="consultaUbicaPlusRequest">
+<wsdl:part name="parametrosUbica" type="tns1:ParametrosUbicaPlusDTO"/>
+</wsdl:message>
+<wsdl:message name="consultaUbicaPlusResponse">
+<wsdl:part name="consultaUbicaPlusReturn" type="soapenc:string"/>
+</wsdl:message>
+<wsdl:portType name="UbicaPlusWS">
+<wsdl:operation name="consultaUbicaPlus" parameterOrder="parametrosUbica">
+<wsdl:input message="impl:consultaUbicaPlusRequest" name="consultaUbicaPlusRequest"/>
+<wsdl:output message="impl:consultaUbicaPlusResponse" name="consultaUbicaPlusResponse"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="UbicaPlusSoapBinding" type="impl:UbicaPlusWS">
+<wsdlsoap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="consultaUbicaPlus">
+<wsdlsoap:operation soapAction=""/>
+<wsdl:input name="consultaUbicaPlusRequest">
+<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ubicaplus.webservice.com" use="encoded"/>
+</wsdl:input>
+<wsdl:output name="consultaUbicaPlusResponse">
+<wsdlsoap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" namespace="http://ubicaplus.webservice.com" use="encoded"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="UbicaPlusWSService">
+<wsdl:port binding="impl:UbicaPlusSoapBinding" name="UbicaPlus">
+<wsdlsoap:address location="https://miportafoliouat.transunion.co/ws/UbicaPlusWebService/services/UbicaPlus"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
