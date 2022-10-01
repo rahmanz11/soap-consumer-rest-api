@@ -33,8 +33,8 @@ import org.w3c.dom.Element;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;group ref="{http://schemas.xmlsoap.org/soap/encoding/}Array" minOccurs="0"/&gt;
- *       &lt;attGroup ref="{http://schemas.xmlsoap.org/soap/encoding/}arrayAttributes"/&gt;
  *       &lt;attGroup ref="{http://schemas.xmlsoap.org/soap/encoding/}commonAttributes"/&gt;
+ *       &lt;attGroup ref="{http://schemas.xmlsoap.org/soap/encoding/}arrayAttributes"/&gt;
  *       &lt;anyAttribute processContents='lax' namespace='##other'/&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -51,10 +51,6 @@ public class Array {
 
     @XmlAnyElement(lax = true)
     protected List<Object> any;
-    @XmlAttribute(name = "arrayType", namespace = "http://schemas.xmlsoap.org/soap/encoding/")
-    protected java.lang.String arrayType;
-    @XmlAttribute(name = "offset", namespace = "http://schemas.xmlsoap.org/soap/encoding/")
-    protected java.lang.String offset;
     @XmlAttribute(name = "id")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
@@ -63,6 +59,10 @@ public class Array {
     @XmlAttribute(name = "href")
     @XmlSchemaType(name = "anyURI")
     protected java.lang.String href;
+    @XmlAttribute(name = "arrayType", namespace = "http://schemas.xmlsoap.org/soap/encoding/")
+    protected java.lang.String arrayType;
+    @XmlAttribute(name = "offset", namespace = "http://schemas.xmlsoap.org/soap/encoding/")
+    protected java.lang.String offset;
     @XmlAnyAttribute
     private Map<QName, java.lang.String> otherAttributes = new HashMap<QName, java.lang.String>();
 
@@ -94,54 +94,6 @@ public class Array {
             any = new ArrayList<Object>();
         }
         return this.any;
-    }
-
-    /**
-     * Gets the value of the arrayType property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link java.lang.String }
-     *     
-     */
-    public java.lang.String getArrayType() {
-        return arrayType;
-    }
-
-    /**
-     * Sets the value of the arrayType property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link java.lang.String }
-     *     
-     */
-    public void setArrayType(java.lang.String value) {
-        this.arrayType = value;
-    }
-
-    /**
-     * Gets the value of the offset property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link java.lang.String }
-     *     
-     */
-    public java.lang.String getOffset() {
-        return offset;
-    }
-
-    /**
-     * Sets the value of the offset property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link java.lang.String }
-     *     
-     */
-    public void setOffset(java.lang.String value) {
-        this.offset = value;
     }
 
     /**
@@ -190,6 +142,54 @@ public class Array {
      */
     public void setHref(java.lang.String value) {
         this.href = value;
+    }
+
+    /**
+     * Gets the value of the arrayType property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link java.lang.String }
+     *     
+     */
+    public java.lang.String getArrayType() {
+        return arrayType;
+    }
+
+    /**
+     * Sets the value of the arrayType property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link java.lang.String }
+     *     
+     */
+    public void setArrayType(java.lang.String value) {
+        this.arrayType = value;
+    }
+
+    /**
+     * Gets the value of the offset property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link java.lang.String }
+     *     
+     */
+    public java.lang.String getOffset() {
+        return offset;
+    }
+
+    /**
+     * Sets the value of the offset property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link java.lang.String }
+     *     
+     */
+    public void setOffset(java.lang.String value) {
+        this.offset = value;
     }
 
     /**
