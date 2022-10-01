@@ -1,0 +1,30 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<bean id="logInBound" class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+	<bean id="logOutBound" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+	<jaxws:client id="ubicaClient" serviceClass="com.webservice.ubicaplus.UbicaPlusWS"
+		address="https://miportafoliouat.transunion.co/ws/UbicaPlusWebService/services/UbicaPlus?wsdl">
+		<jaxws:outInterceptors>
+			<ref bean="logOutBound" />
+			<ref bean="outbound-security" />
+		</jaxws:outInterceptors>
+	</jaxws:client>
+    <bean class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor" id="outbound-security">
+        <constructor-arg>
+            <map>
+                <entry key="action" value="Signature Timestamp"/>
+                <entry key="user" value="equidadtes"/>
+                <entry key="signaturePropFile" value="./client-crypto.properties"/>
+                <entry key="decryptionPropFile" value="./client-crypto.properties"/>
+                <entry key="signatureKeyIdentifier" value="IssuerSerial"/>
+                <entry key="passwordCallbackClass" value="org.union.trans.ubica.plus.soap.client.ClientPasswordCallback"/>
+                <entry key="signatureParts"
+                       value="{Element}{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}Timestamp;{Element}{http://schemas.xmlsoap.org/soap/envelope/}Body"/>
+            </map>
+        </constructor-arg>
+    </bean>
+</beans>
