@@ -11,13 +11,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class RestApiResponse implements Serializable {
     private CIFIN data;
-    private CifinError error;
 
     public RestApiResponse(CIFIN data) {
         this.data = data;
-    }
-
-    public RestApiResponse(CifinError error) {
-        this.error = error;
     }
 }

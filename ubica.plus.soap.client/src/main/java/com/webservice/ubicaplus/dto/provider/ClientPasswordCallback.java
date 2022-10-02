@@ -1,4 +1,4 @@
-package org.union.trans.ubica.plus.soap.client;
+package org.union.trans.ubica.plus.soap.client.provider;
 
 import org.apache.wss4j.common.ext.WSPasswordCallback;
 

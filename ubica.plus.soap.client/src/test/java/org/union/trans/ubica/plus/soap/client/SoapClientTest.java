@@ -5,17 +5,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.union.trans.ubica.plus.soap.client.payload.SoapRequest;
-import org.union.trans.ubica.plus.soap.client.payload.SoapResponse;
+import com.webservice.ubicaplus.dto.payload.SoapRequest;
+import com.webservice.ubicaplus.dto.payload.SoapResponse;
+import com.webservice.ubicaplus.dto.provider.SoapClient;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@Configuration
-@ComponentScan("org.union.trans.ubica.plus.soap.client")
 @SpringBootTest
 public class SoapClientTest {
     @Autowired
@@ -55,7 +52,7 @@ public class SoapClientTest {
         request.setUserName(null);
         request.setPassword(null);
         SoapResponse response = soapClient.call(request);
-        assertTrue(response.isIs401() == true);
+        assertTrue(response.is401() == true);
     }
 
     @Test
@@ -63,6 +60,6 @@ public class SoapClientTest {
         request.setUserName("dummy");
         request.setPassword("dummy");
         SoapResponse response = soapClient.call(request);
-        assertTrue(response.isIs401() == true);
+        assertTrue(response.is401() == true);
     }
 }
