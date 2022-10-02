@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import org.union.trans.ubica.plus.soap.client.payload.CIFIN;
+import org.union.trans.ubica.plus.soap.client.payload.CifinError;
 import org.union.trans.ubica.plus.soap.client.payload.SoapRequest;
 import org.union.trans.ubica.plus.soap.client.payload.SoapResponse;
 
@@ -27,13 +28,37 @@ public class SoapClient {
 		&& request.getPassword() != null && request.getPassword().trim() != "") {
 			Map<String, Object> reqContext = ((BindingProvider)
 					ubicaws).getRequestContext();
-			reqContext.put(BindingProvider.USERNAME_PROPERTY, "307883");
-			reqContext.put(BindingProvider.PASSWORD_PROPERTY, "Equidad2208*");
+			reqContext.put(BindingProvider.USERNAME_PROPERTY, request.getUserName());
+			reqContext.put(BindingProvider.PASSWORD_PROPERTY, request.getPassword());
 		}
+		org.xmlsoap.schemas.soap.encoding.String response;
+		try {
+			response = ubicaws.consultaUbicaPlus(this.prepareSoapRequest(request));
+			String responseString = response.getValue();
+			System.out.println("Response String: " + responseString);
+			boolean error = false;
+			if (responseString.contains("CifinError")) {
+				error = true;
+			}
 
+			return this.prepareSoapResponse(responseString, error);
+
+		} catch (RuntimeException t) {
+			t.printStackTrace();
+			if (t.getCause().getMessage().contains("401: Unauthorized")) {
+				System.err.println("Unauthorized Access");
+				return new SoapResponse(true);
+			} else {
+				System.err.println("SOAP Exception");
+				return new SoapResponse(t.getMessage());
+			}
+		}
+	}
+
+	private ParametrosUbicaPlusDTO prepareSoapRequest(SoapRequest request) {
 		ParametrosUbicaPlusDTO dto = new ParametrosUbicaPlusDTO();
 
-        if (request.getCodigoInformacion() != null && request.getCodigoInformacion().trim() != "") {
+		if (request.getCodigoInformacion() != null && request.getCodigoInformacion().trim() != "") {
 			org.xmlsoap.schemas.soap.encoding.String codigoInformacion = new org.xmlsoap.schemas.soap.encoding.String();
 			codigoInformacion.setValue(request.getCodigoInformacion());
 			dto.setCodigoInformacion(codigoInformacion);
@@ -63,33 +88,33 @@ public class SoapClient {
 			dto.setPrimerApellido(primerApellido);
 		}
 
-		org.xmlsoap.schemas.soap.encoding.String response;
+		return dto;
+	}
 
-		try {
-			response = ubicaws.consultaUbicaPlus(dto);
-			System.out.println(response.getValue());
-		} catch (RuntimeException t) {
-			if (t.getMessage().contains("401: Unauthorized")) {
-				return new SoapResponse(true);
-			} else {
-				return new SoapResponse(t.getMessage());
-			}
-		}
-
+	private SoapResponse prepareSoapResponse(String responseString, boolean error) {
 		JAXBContext jaxbContext;
 		try {
-			jaxbContext = JAXBContext.newInstance(CIFIN.class);
+			if (!error) {
+				jaxbContext = JAXBContext.newInstance(CIFIN.class);
+			} else {
+				jaxbContext = JAXBContext.newInstance(CifinError.class);
+			}
+
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-			CIFIN cifin = (CIFIN) jaxbUnmarshaller.unmarshal(new StringReader(response.getValue()));
 
-			System.out.println(cifin);
-
-			return new SoapResponse(cifin);
+			if (!error) {
+				CIFIN cifin = (CIFIN) jaxbUnmarshaller.unmarshal(new StringReader(responseString));
+				System.out.println(cifin);
+				return new SoapResponse(cifin);
+			} else {
+				CifinError cifinError = (CifinError) jaxbUnmarshaller.unmarshal(new StringReader(responseString));
+				System.out.println(cifinError);
+				return new SoapResponse(cifinError);
+			}
 		} catch (JAXBException e) {
-			e.printStackTrace();
+			System.err.println("Response conversion exception");
+			return new SoapResponse(e.getMessage());
 		}
-
-        return null;
 	}
 
 }

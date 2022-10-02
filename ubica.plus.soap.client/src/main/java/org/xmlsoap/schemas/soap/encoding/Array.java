@@ -33,8 +33,8 @@ import org.w3c.dom.Element;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;group ref="{http://schemas.xmlsoap.org/soap/encoding/}Array" minOccurs="0"/&gt;
- *       &lt;attGroup ref="{http://schemas.xmlsoap.org/soap/encoding/}commonAttributes"/&gt;
  *       &lt;attGroup ref="{http://schemas.xmlsoap.org/soap/encoding/}arrayAttributes"/&gt;
+ *       &lt;attGroup ref="{http://schemas.xmlsoap.org/soap/encoding/}commonAttributes"/&gt;
  *       &lt;anyAttribute processContents='lax' namespace='##other'/&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -51,6 +51,10 @@ public class Array {
 
     @XmlAnyElement(lax = true)
     protected List<Object> any;
+    @XmlAttribute(name = "arrayType", namespace = "http://schemas.xmlsoap.org/soap/encoding/")
+    protected java.lang.String arrayType;
+    @XmlAttribute(name = "offset", namespace = "http://schemas.xmlsoap.org/soap/encoding/")
+    protected java.lang.String offset;
     @XmlAttribute(name = "id")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
@@ -59,10 +63,6 @@ public class Array {
     @XmlAttribute(name = "href")
     @XmlSchemaType(name = "anyURI")
     protected java.lang.String href;
-    @XmlAttribute(name = "arrayType", namespace = "http://schemas.xmlsoap.org/soap/encoding/")
-    protected java.lang.String arrayType;
-    @XmlAttribute(name = "offset", namespace = "http://schemas.xmlsoap.org/soap/encoding/")
-    protected java.lang.String offset;
     @XmlAnyAttribute
     private Map<QName, java.lang.String> otherAttributes = new HashMap<QName, java.lang.String>();
 
@@ -84,8 +84,8 @@ public class Array {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Object }
      * {@link Element }
+     * {@link Object }
      * 
      * 
      */
@@ -94,54 +94,6 @@ public class Array {
             any = new ArrayList<Object>();
         }
         return this.any;
-    }
-
-    /**
-     * Gets the value of the id property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link java.lang.String }
-     *     
-     */
-    public java.lang.String getId() {
-        return id;
-    }
-
-    /**
-     * Sets the value of the id property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link java.lang.String }
-     *     
-     */
-    public void setId(java.lang.String value) {
-        this.id = value;
-    }
-
-    /**
-     * Gets the value of the href property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link java.lang.String }
-     *     
-     */
-    public java.lang.String getHref() {
-        return href;
-    }
-
-    /**
-     * Sets the value of the href property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link java.lang.String }
-     *     
-     */
-    public void setHref(java.lang.String value) {
-        this.href = value;
     }
 
     /**
@@ -190,6 +142,54 @@ public class Array {
      */
     public void setOffset(java.lang.String value) {
         this.offset = value;
+    }
+
+    /**
+     * Gets the value of the id property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link java.lang.String }
+     *     
+     */
+    public java.lang.String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the value of the id property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link java.lang.String }
+     *     
+     */
+    public void setId(java.lang.String value) {
+        this.id = value;
+    }
+
+    /**
+     * Gets the value of the href property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link java.lang.String }
+     *     
+     */
+    public java.lang.String getHref() {
+        return href;
+    }
+
+    /**
+     * Sets the value of the href property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link java.lang.String }
+     *     
+     */
+    public void setHref(java.lang.String value) {
+        this.href = value;
     }
 
     /**

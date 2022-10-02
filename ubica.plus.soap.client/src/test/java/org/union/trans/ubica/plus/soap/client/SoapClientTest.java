@@ -23,10 +23,10 @@ public class SoapClientTest {
     private SoapRequest request;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         request = new SoapRequest();
         request.setUserName("307883");
-        request.setUserName("Equidad2208*");
+        request.setPassword("Equidad2208*");
         request.setCodigoInformacion("5632");
         request.setMotivoConsulta("24");
         request.setNumeroIdentificacion("262744");
@@ -44,9 +44,24 @@ public class SoapClientTest {
     }
 
     @Test
-    public void test401() {
+    public void testSoapResponseErrorCode4() {
+        request.setNumeroIdentificacion(null);
+        SoapResponse response = soapClient.call(request);
+        assertTrue(response.getCifinError().getError().getCodigoError().trim().equals("4"));
+    }
+
+    @Test
+    public void test401UnauthorizedWithNullCredentials() {
         request.setUserName(null);
         request.setPassword(null);
+        SoapResponse response = soapClient.call(request);
+        assertTrue(response.isIs401() == true);
+    }
+
+    @Test
+    public void test401UnauthorizedWithInvalidCredentials() {
+        request.setUserName("dummy");
+        request.setPassword("dummy");
         SoapResponse response = soapClient.call(request);
         assertTrue(response.isIs401() == true);
     }
